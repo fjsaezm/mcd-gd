@@ -17,7 +17,8 @@ data <- data[, -c(1:6)]# delete columns 1 through 6
 data <- data[,-ncol(data)]
 
 # Apartado c
-hist(as.numeric(unlist(data)), labels=c(0,1), main='Frecuencia de respuestas')
+hist(as.numeric(unlist(data)), labels=c(0,1), xlab='Valores tomados',
+     main='Frecuencia de respuestas')
 
 # Apartado d
 distances = dist(t(data), method="euclidean")
