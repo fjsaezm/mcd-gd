@@ -92,7 +92,7 @@
 
 \section{Objetivos}
 
-En esta práctica estudiaremos un dataser de \emph{CardSorting} para ver las relaciones entre diversos productos de supermercado. Para ello emplearemos distintas tipos de visualización: un hisograma, un \emph{heatmap}, un dendograma y un grafo de similitudes entre tarjetas.
+En esta práctica estudiaremos un dataset de \emph{CardSorting} para ver las relaciones entre diversos productos de supermercado. Para ello emplearemos diferentes técnicas de visualización de datos como: un hisograma, un \emph{heatmap}, un dendograma y un grafo de similitudes entre tarjetas.
 
 \section{Lectura y limpieza de datos}
 
@@ -108,7 +108,7 @@ Como primera aproximación a la visualización de estos datos estamos interesado
 	\caption{Histograma de nuestro dataset.}
 \end{figure}
 
-Vemos como la mayoría de los valores están en $0$, mientras que algunos pocos toman el valor $1$. Recordemos la información que codifica este dataset: cada columna es un producto del supermercado (una \emph{card} en nuestro \emph{CardSorting}), mientras que cada fila es una categoría, intrododucia por el usuario con Id asociado \emph{Uniqid}. Un $1$ significa que el usuario ha asociado ese producto con esa categoría, y un $0$ que no lo ha hecho. \\
+Vemos como la mayoría de los valores están en $0$, mientras que algunos pocos toman el valor $1$. Recordemos la información que codifica este dataset: cada columna es un producto del supermercado (una \emph{card} en nuestro \emph{CardSorting}), mientras que cada fila es una categoría, introducida por el usuario con Id asociado \emph{Uniqid}. Un $1$ significa que el usuario ha asociado ese producto con esa categoría, y un $0$ que no lo ha hecho. \\
 
 Por un lado, nuestro análisis númerico dado por el histograma encaja con nuestra intuición: la gran mayoría de los valores serán $0$. Por otro lado, puesto que las categorías son introducidas por los usuarios de forma manual, obtendremos muchas categorías similiares pero ligeramente distintas. Por ejemplo, para frutas y verduras obtenemos entre otras las siguientes categorías: \emph{fruits}, \emph{veggies}, \emph{fruits and veggies} y \emph{frutis and veggies}.
 
@@ -116,7 +116,7 @@ Por un lado, nuestro análisis númerico dado por el histograma encaja con nuest
 
 Tras una primera impresión de la distribución numérica de los datos, procedemos a realizar un estudio sobre la similitud hayada entre las tarjetas de este dataset. Para ello computaremos la matriz de distancias entre las distintas tarjetas, utilizando la distancia euclídea. Cabe destacar que puesto que los valores de nuestro dataset están en $\{0,1\}$, $x^2 = x$, y la distancia en $L_1$ será equivalente a la distancia euclídea de $L_2$. A pesar de ello, sería interesante utilizar distintas distancias para comparar los resultados entre ambas. \\
 
-Tras computar la matriz de distancias hacemos uso de la función \emph{heatmap.2} de R para representar un mapa de valor. Valores más bajos (rojos) representarán distancias más bajas. Es decir, tarjetas más relacionadas. En contraparte, valores más altos (amarillo claro y blanco) representarán distancias altas. Es decir, tarjetas poco relacionadas. \\
+Tras computar la matriz de distancias hacemos uso de la función \emph{heatmap.2} de R para representar un mapa de calor. Valores más bajos (rojos) representarán distancias más bajas. Es decir, tarjetas más relacionadas. En contraparte, valores más altos (amarillo claro y blanco) representarán distancias altas. Es decir, tarjetas poco relacionadas. \\
 
 \begin{figure}[H]
 	\includegraphics[scale=.6]{figures/heatmap}
@@ -148,7 +148,7 @@ Obtenemos el siguiente gráfico como resultado:
 	\caption{Grafo ponderado de las similitud entre tarjetas}
 \end{figure}
 
-En este nuevo gráfico es sencillo apreciar los mismos resultados que en el \emph{heatmap} y en el dendograma: hay dos clusteres de elementos relacionados claramente, las frutas y las verduras, ligeramente serarados. Por otro ladom encontramos fuertes relaciones entre las parejas (\emph{Salmon}, \emph{Lobster}) (\emph{Pie}, \emph{Cake}).
+En este nuevo gráfico es sencillo apreciar los mismos resultados que en el \emph{heatmap} y en el dendograma: hay dos clusteres de elementos relacionados claramente, las frutas y las verduras, ligeramente serarados. Por otro lado encontramos fuertes relaciones entre las parejas (\emph{Salmon}, \emph{Lobster}) (\emph{Pie}, \emph{Cake}).
 
 \section{Tarjetas más relacionadas}
 
