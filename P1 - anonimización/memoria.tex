@@ -1,0 +1,304 @@
+%-------------------------------
+%	DOCUMENT SETTINGS
+%-------------------------------
+\documentclass[a4paper]{article}
+
+\setlength{\hoffset}{-3.2cm}
+\setlength{\voffset}{-3cm}
+\setlength{\textwidth}{18.7cm}
+\setlength{\textheight}{25.5cm}
+\setlength{\parskip}{0pt}
+\setlength{\parindent}{0in}
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\usepackage{mathtools}
+\usepackage[table]{xcolor} % Driver-independent color extensions, para table-generators
+\usepackage[utf8]{inputenc} % Use UTF-8 encoding
+\usepackage{microtype} % Slightly tweak font spacing for aesthetics
+\usepackage[english]{babel} % Language hyphenation and typographical rules
+\usepackage{amsthm, amsmath, amssymb} % Mathematical typesetting
+\usepackage{float} % Improved interface for floating objects
+\usepackage[final, colorlinks = true, linkcolor = black, citecolor = black]{hyperref} % For hyperlinks in the PDF
+\usepackage{dsfont}
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}%
+\usepackage{cancel}
+\usepackage{charter} % Use the Charter font
+\usepackage{graphicx, multicol} % Enhanced support for graphics
+\usepackage{booktabs} % Enhances quality of tables
+\usepackage{tikz-qtree} % Easy tree drawing tool
+% Configuration for b-trees and b+-trees, !uses style file!
+%\usepackage[backend=biber,style=numeric,
+%            sorting=nyt]{biblatex} % Complete reimplementation of bibliographic facilities
+%\addbibresource{ecl.bib}
+
+\usepackage[yyyymmdd]{datetime} % Uses YEAR-MONTH-DAY format for dates
+\renewcommand{\dateseparator}{-} % Sets dateseparator to '-'
+\usepackage{fancyhdr} % Headers and footers
+
+\pagestyle{fancy} % All pages have headers and footers
+\fancyhead{}\renewcommand{\headrulewidth}{0pt} % Blank out the default header
+\fancyfoot[L]{} % Custom footer text
+\fancyfoot[C]{} % Custom footer text
+\fancyfoot[R]{\thepage} % Custom footer text
+\newcommand{\note}[1]{\marginpar{\scriptsize \textcolor{red}{#1}}} % Enables comments in red on margin
+
+%----------------------------------------------------------------------------------------
+%	CUSTOM COMMANDS
+%----------------------------------------------------------------------------------------
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\Var}{\text{Var}}
+% Para poner sonrisa sobre puntos suspensivos. Uso: \overplace{n}{\dotsc}
+\newcommand{\overplace}[2]{%
+	\overset{\substack{#1\\\smile}}{#2}%
+}
+
+\begin{document}
+
+%-------------------------------
+%	TITLE SECTION
+%-------------------------------
+
+\fancyhead[C]{}
+\hrule \medskip % Upper rule
+\begin{minipage}{0.295\textwidth} 
+	\raggedright
+	\footnotesize
+	José Antonio Álvarez Ocete \hfill\\   
+	Francisco Javier Sáez Maldonado \hfill
+\end{minipage}
+\begin{minipage}{0.4\textwidth} 
+	\centering 
+	\large 
+	Anonimización \\ 
+	\normalsize 
+	Gestión de Datos \\ 
+\end{minipage}
+\begin{minipage}{0.295\textwidth} 
+	\raggedleft
+	\today\hfill\\
+\end{minipage}
+\medskip\hrule 
+\bigskip
+
+%-------------------------------
+%	CONTENTS
+%-------------------------------
+
+\section{Objetivos}
+
+En esta práctica utilizaremos los datos abiertos de PDI de la UAM correspondiente al año 2019, disponible en \href{https://www.universidata.es/datasets/uam-personal-pdi}{este link} con el objetivo de identificar al profesor Ortigosa. Para ello se nos ha proporcionado su explícito consentimiento. En particular, inferiremos el valor de los aquellos campos que no empiezan por $cod\_$, $lon\_$ o $lat\_$. \\
+
+Para poder estudiar este \emph{dataset} hemos de conocer en detalle el proceso de anonimización seguido para crearlo. Podemos encontrarlo en \href{https://dimetrical.atlassian.net/wiki/spaces/UNC/pages/490799108/Dataset+Personal+Docente+e+Investigador+PDI}{este link}.
+
+\section{Información utilizada}
+
+Se nos ha proporcionado la siguiente información sobre el profesor Ortigosa:
+
+\begin{itemize}
+	\item El profesor Ortigosa estaba en 2019 en la UAM. Esto es, tenemos asegurado que aparece en el fichero.
+	\item El profesor Ortigosa era de género masculino en 2019.
+	\item El profesor Ortigosa pertenecía al Departamento de Ingeniería Informática en 2019.
+\end{itemize}
+
+Adicionalmente, utilizaremos las siguientes piezas de información encontradas buscando sobre el profesor Ortigosa en internet.
+
+\begin{itemize}
+	\item En \href{https://repositorio.uam.es/handle/10486/726}{la Biblioteca-UAM} encontramos la tesis doctoral del profesor Ortigosa. En particular nos interesa su año de publicación, \textbf{2000}, y la universidad en la que se doctoró, la \textbf{Universidad Autónoma de Madrid}.
+	\item En \href{https://www.icfs-uam.es/miembros/}{portal de miembros de la Universidad Autónoma de Madrid} podemos encontra el cargo del profesor Ortigosa: \textbf{Ingeniero Informático, Profesor Titular}.
+	\item En el \href{https://www.linkedin.com/in/alvaroortigosa/?originalSubdomain=es}{LinkedIn del profesor Ortigosa} podemos encontrar sus númerosos cargos actuales además del cargo de profesor titular.
+	\item En la página 20 de los  \href{https://transparencia.uam.es/wp-content/uploads/2019/05/Estatutos.pdf}{Estatutos de la UAM} encontramos la definición de \textbf{cargo unipersonal}.
+	\item En la \href{https://www.uam.es/EPS/OrganosDeDireccion/1242660085957.htm?language=es&nodepath=?rganos%20de%20Direcci?n}{Oficina de prácticas de la EPS} descubrimos que \textbf{el profesor Ortigosa no es director, subdirector ni secretario del Departamento de Ingeniería Informática} al que pertenece. Si que es considerado \textbf{Miembro Nato del Consejo de Departamento}.
+	\item En el \href{https://portalcientifico.uam.es/ipublic/agent-personal/profile/iMarinaID/04-261195}{perfil de investigador del profesor Ortigosa} encontramos información relacionada con su carrera académica en la UAM. Nos es particularmente relevante el Área de Conocimiento, \textbf{Lenguajes Y Sistemas Informáticos}, así como su número de quinquenios y sexsenios: 3 y 4 respectivamente. Además, podemos inferir el año de incorporación al cuerpo docente a partir de la primeras asignaturas que impartió en la UAM en el año 2008.
+	\item Hemos consultado \href{https://documat.unirioja.es/servlet/autor?codigo=3113302#Tesis}{Documat} y \href{https://www.researchgate.net/profile/Alvaro-Ortigosa}{ResearchGate} para investigar si el profesor Ortigosa había publicado una segunda tesis, pero no hemos encontrado evidencias de ello.
+	\item En \href{https://vghia.ii.uam.es/members}{la página de equipo GHIA} encontramos al profesor Ortigosa como miembro del equipo, no quedándo claro si es investigador principal de algún proyecto.
+\end{itemize}
+
+Asumiremos que todas estas fuentes de información son precisas y están actualizadas en la fecha de consulta, 27 de Diciembre de 2021.
+
+\section{Proceso seguido}
+
+En primer lugar hemos de identificar las variables pivote en el proceso de anonimización. Estudiando el proceso de anonimización sabemos que estas son $cod\_unidad\_responsable / des\_unidad\_responsable$ y $cod\_genero / des\_genero$. Sabemos por un lado que el género del profesor Ortigosa es masculino. Por otro lado, la variable $des\_unidad\_responsable$ hace referencia al departamento, también conocido: Departamento de Ingeniería Informática. \\
+
+Conciendo el proceso de anonimización sabemos que los valores de cada variable para el profesor Ortigosa han de tener asociadas las variables pivotes. Es decir, podemos restringirnos a aquellas filas del \emph{dataset} con estos valores en los campos $des\_genero$ y $des\_unidad\_responsable$. \\
+
+Obtenemos que únicamente $56$ filas de las originales $2577$ cumple este criterio. Estudiaremos los valores que puede tomar cada campo del \emph{dataset} para el profesor Ortigosa por bloques de coherencia, ya que son aquellas variables que permanecen relacionadas tras las permutación.
+
+\subsection{Bloque de coherencia 1}
+
+El primer bloque de coherencia inluye las variables referentes a la universidad y el año en el que este campo ha sido añadido. En este caso la estimación es sencilla pues las $56$ filas toman los mismos valores:
+ 
+\begin{table}[H]
+	\centering
+	\begin{tabular}{ccc}
+		\textbf{Campo}   & \textbf{Valor estimado}        & \textbf{Nivel de Certeza (\%)} \\ \hline
+		des\_universidad & Universidad Autónoma de Madrid & 100\%                          \\
+		anio             & 2019                           & 100\%                         
+	\end{tabular}
+\end{table}
+
+\subsection{Bloque de coherencia 2}
+
+La variables del segundo bloque de coherencia son $des\_pais\_nacionalidad$, $des\_continente\_nacionalidad$ y $des\_agregacion\_paises\_nacionalidad$. Estudiamos la frecuencia con la que aparece cada valor en nuestro \emph{dataset} reducido con las variables pivote y asignaremos al profesor Ortigosa aquel valor con mayor frecuencia. El nivel de certeza será la frecuencia de aparición de dicho valor. Seguiremos este mismo proceso para el resto de bloques de coherencia. Obtenemos los siguientes resultados:
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{ccc}
+		\textbf{Campo}                        & \textbf{Valor estimado}        & \textbf{Nivel de Certeza (\%)} \\ \hline
+		des\_pais\_nacionalidad               & Universidad Autónoma de Madrid & 98.21\%                        \\
+		des\_continente\_nacionalidad         & Europa meridional              & 100\%                          \\
+		des\_agregacion\_paises\_nacionalidad & Europa                         & 100\%                         
+	\end{tabular}
+\end{table}
+
+\subsection{Bloque de coherencia 3}
+
+Repetimos el proceso para las variables del tercer bloque de coherencia:
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{ccc}
+		\textbf{Campo}             & \textbf{Valor estimado} & \textbf{Nivel de Certeza (\%)} \\ \hline
+		des\_comunidad\_residencia & Madrid                  & 100\%                          \\
+		des\_provincia\_residencia & Madrid                  & 100\%                          \\
+		des\_municipio\_residencia & MADRID                  & 51.78\%                       
+	\end{tabular}
+\end{table}
+
+\subsection{Bloque de coherencia 4}
+
+El cuarto bloque de coherencia únicamente incluye la fecha de nacimiento. Para este campo los valores tomados por neustro \emph{dataset} son muy dispares. De cara a obtener una mejor predicción hemos encontrado el año de publicación de su tesis doctoral: 2000. Sabiendo que antiguamente las licenciaturas se terminaban con una media de 23 años, y añadiendo 3 adicionales para la tesis obtenemos una edad mínima para la publicación de la tesis de 26 años. Siendo conservadores diremos que el profesor Ortigosa nació antes del año 1975. \\
+
+Aplicando este nuevo filtro a los datos obtenemos una estimación más precisa. En particular obtenemos el mismo valor con mayor frecuencia, pero dicha frecuencia es más alta, luego nuestro nivel de certeza es mayor. Estos son los resultados obtenidos:
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{ccc}
+		\textbf{Campo}             & \textbf{Valor estimado} & \textbf{Nivel de Certeza (\%)} \\ \hline
+		anio\_nacimiento           & 1967                    & 13.88\%                         \\           
+	\end{tabular}
+\end{table}
+
+\subsection{Bloque de coherencia 5}
+
+El quinto bloque de coherencia incluye variables asociadas al cargo del profesor Ortigosa en la UAM. En particular, conocemos el cargo del profesor Ortigosa (Profesor Titular), asi que podemos restringirnos a las filas que toman dicho valor. Obtenemos así los siguientes resultados:
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{ccc}
+		\textbf{Campo}                         & \textbf{Valor estimado}                               & \textbf{Nivel de Certeza (\%)} \\ \hline
+		des\_tipo\_personal                    & Funcionario Interino                                  & 100\%                          \\
+		des\_categoria\_cuerpo\_escala         & Profesor Titular de Universidad                       & 100\%                          \\
+		des\_tipo\_contrato                    & Personal Funcionario\textbackslash{}Personal eventual & 100\%                          \\
+		des\_dedicacion                        & Dedicación a Tiempo Completo                          & 100\%                        \\
+		num\_horas\_semanales\_tiempo\_parcial & NaN                                                   & 100\%                        \\
+		des\_situacion\_administrativa         & Servicio Activo                                       & 92.85\%                       
+	\end{tabular}
+\end{table}
+
+Hemos de aclarar que el número de horas semanales a tiempo parcial aparece como $NaN$ pues si el contrato es de tiempo completo, este campo toma dicho valor. Aclaramos también que la investigación realizada ha revelado que el profesor Ortigosa posee numerosos cargos adicionales además de su puesto de profesor titular en la universidad. Sin embargo, escapa a nuestro conocimiento si estos cargos interfieren de ninguna forma con su ocupación en la universidad y si influye en estos campos. Es por ello que no hemos utilizado esta información para nuestra inferencia.
+
+\subsection{Bloque de coherencia 6}
+
+El sexto bloque de coherencia contiene una única variable boleana indicando si el individuo ostenta un cargo unipersonal remunerado en la universidad. Aunque sabemos que el profesor Ortigosa es profesor titular, ¿es esto un \emph{cargo unipersonal}? Revisando los estatutos de la universidad encontramos la definición de cargo unipersonal: \emph{Rector, Vicerrectores, Secretario General, Gerente; Decanos, Vicedecanos y Secretarios de Facultad; Directores, Subdirectores y Secretarios de Escuela; Directores y Secretarios de Departamento; Directores de Instituto Universitario de Investigación; y Administradores Gerentes de Centro.} \\
+
+Con nuestro conocimiento del problema sabemos que el profesor Ortigosa no es director, subdirector ni secretario del departamento al que pertenece. Si es miembbro nato del consejo de departamento, pero este no se considera un cargo unipersonal. Por lo tanto, no podemos asegurar que el profesor Ortigosa ostente este tipo de cargo. Nos remetimos entonces a la inferencia realizada hasta ahora a aprtir de la frecuencia de nuestro dataset, obteniendo el siguiente resultado:
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{ccc}
+		\textbf{Campo}                         & \textbf{Valor estimado}                               & \textbf{Nivel de Certeza (\%)} \\ \hline
+		ind\_cargo\_remunerado                 & N                                  & 82.14\%                     
+	\end{tabular}
+\end{table}
+
+Donde el valor $N$ significa que no obstenta dicho cargo.
+
+\subsection{Bloque de coherencia 7}
+
+El séptimo bloque de coherencia incluye variables relaciones con el título de doctor. A partir de las tesis encontrada sabemos que ésta se presentó en el año 2000 a través de la Universidad Autónoma de Madrid. Filtrando en nuestro \emph{dataset} utilizando estos valores obtenemos una buena predicción en todas las variables de este bloque:
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{ccc}
+		\textbf{Campo}                     & \textbf{Valor estimado}        & \textbf{Nivel de Certeza (\%)} \\ \hline
+		des\_titulo\_doctorado             & Uno                            & 100\%                          \\
+		des\_pais\_doctorado               & España                         & 100\%                          \\
+		des\_continente\_doctorado         & Europa                         & 100\%                          \\
+		des\_agregacion\_paises\_doctorado & Europa meridional              & 100\%                          \\
+		des\_universidad\_doctorado        & Universidad Autónoma de Madrid & 100\%                          \\
+		anio\_lectura\_tesis               & 2000.0                         & 100\%                          \\
+		anio\_expedicion\_titulo\_doctor   & 2000.0                         & 100\%                        \\
+		des\_mencion\_europea              & No                             & 100\%                         
+	\end{tabular}
+\end{table}
+
+\subsection{Bloque de coherencia 8}
+
+El octavo bloque de coherencia incluye variables relacionadas con el departamento del profesor Ortigosa. En particular, sabemos tanto el departamento como el área de conocimiento del profesor Ortigosa a partir de nuestra búsqueda de información previa:
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{ccc}
+		\textbf{Campo}                     & \textbf{Valor estimado}           & \textbf{Nivel de Certeza (\%)} \\ \hline
+		des\_tipo\_unidad\_responsable     & Departamento                      & 100\%                          \\
+		des\_area\_conocimiento            & Lenguajes y Sistemas Informáticos & 100\%                          \\                    
+	\end{tabular}
+\end{table}
+
+\subsection{Bloque de coherencia 9}
+
+El noveno bloque de coherencia contiene variables relacionadas con el tiempo que lleva trabajando el personal de la Universidad en la misma. En este caso filtraremos nuestra información conociendo número quinquenios (3) y sexsenios (4) que ha trabajo el profesor Ortigosa en la UAM. Además, sabiendo que impartió su primeras asignaturas en el año 2008, asumiremos que este es el año de incorporación del profesor Ortigosa al sistema como docente. \\
+
+Sin embargo, para los campos filtrados con 3 quinquenios y 4 sexsenios encontramos valores $NaN$ en el cambpo $anio\\_incorporacion\\_ap$ para todas las filas, por lo que suprimimos el filtro asociado al año de incorporación a la docencia. \\ 
+
+Fijando estos valores para los respectivos campos, inferimos el resto de campos del bloque de coherencia:
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{ccc}
+		\textbf{Campo}                   & \textbf{Valor estimado}   & \textbf{Nivel de Certeza (\%)} \\ \hline
+		anio\_incorporacion\_ap          & NaN & 100\%                           \\
+		anio\_incorpora\_cuerpo\_docente & NaN                      & 100\%                          \\
+		num\_trienios                    & 5/6/7                         & 33.33\%                           \\
+		num\_quinquenios                 & 3                         & 100\%                          \\
+		num\_sexenios                    & 4                         & 100\%                          \\
+		\end{tabular}
+\end{table}
+
+Donde hemos obtenido 3 valores distintos para el campo $num\_trienios$ con la misma probabilidad.
+
+\subsection{Bloque de coherencia 10}
+
+El décimo bloque de coherencia contiene una única variable que notifica del número de tesis doctorales que el individuo ha realizado. En nuestor caso, sabemos que el profesor Ortigosa ha publicado al menos una tesis, y en el \emph{dataset} en estudio no hay casos con más de dos, así que nos preguntamos si el profesor Ortigosa ha escrito una segunda tesis. \\
+
+Sin embargo, no hemos encontrado constancia en la investigación realizada de que así sea. Puede darse el caso que dicha tesis no haya sido publicada públicamente o no este disponible en los portales consultados, así que no asumiremos que el profesor Ortigosa ha realizado únicamente una tesis. \\
+
+Aún así, podemos filtrar nuestro datos utilizando que ha escrito \emph{al menos una} tesis doctoral. Obtenemos la siguiente estimación:
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{ccc}
+		\textbf{Campo}                   & \textbf{Valor estimado} & \textbf{Nivel de Certeza (\%)} \\ \hline
+		num\_tesis                       & 1.0                     & 71.42\%                        \\
+	\end{tabular}
+\end{table}
+
+\subsection{Bloque de coherencia 11}
+
+El último bloque de coherencia incluye una única variable booleana señalando si el individuo ha sido el Investigador Principal (IP) de algún proyecto o contrato durante el año. En nuestra investigación hemos encontrado el equipo del profesor Ortigosa, el GHIA. Sin embargo, no queda claro si el profesor Ortigosa ha sido IP del algún proyecto o contrato este año, por lo que nos remitimos al proceso de inferencia realizado hasta ahora:
+
+ \begin{table}[H]
+ 	\centering
+ 	\begin{tabular}{ccc}
+ 		\textbf{Campo}                   & \textbf{Valor estimado} & \textbf{Nivel de Certeza (\%)} \\ \hline
+ 		num\_tesis                       & N                     & 78.57\%                        \\
+ 	\end{tabular}
+ \end{table}
+
+\end{document}
