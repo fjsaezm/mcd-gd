@@ -16,7 +16,7 @@ En esta asignatura hemos realizado cuatro prácticas:
 
 # MSc - gd
 
-Repository for the subject "Gestión de datos" (*data manaement*)  at the Data Science Masters Degree at Universidad Autónoma de Madrid (UAM)
+Repository for the subject "Gestión de datos" (*data management*)  at the Data Science Masters Degree at Universidad Autónoma de Madrid (UAM)
 
 In this subject, we have made 4 assignments:
 
