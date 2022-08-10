@@ -1,4 +1,4 @@
-Big data management
+Big Data management
 ---
 
 In this subject, we have made 4 assignments:
